@@ -1,6 +1,6 @@
 services:
   n8n:
-    build: .                       # ← baut dein Dockerfile
+    build: .
     restart: unless-stopped
     ports:
       - "5678:5678"
@@ -23,11 +23,14 @@ services:
       - 'N8N_GIT_NODE_DISABLE_BARE_REPOS=${N8N_GIT_NODE_DISABLE_BARE_REPOS:-true}'
       - 'N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=${N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS:-true}'
       - 'N8N_PROXY_HOPS=${N8N_PROXY_HOPS:-1}'
+      - 'PYTRENDS_BASE_URL=http://pytrends:8000'   # ← NEU
     volumes:
       - n8n-data:/home/node/.n8n
     depends_on:
       postgresql:
         condition: service_healthy
+      pytrends:                           # ← NEU
+        condition: service_started        # ← NEU
 
   postgresql:
     image: postgres:16-alpine
@@ -43,6 +46,16 @@ services:
       interval: 5s
       timeout: 20s
       retries: 10
+
+  pytrends:                              # ← NEUER SERVICE
+    build:
+      context: .
+      dockerfile: pytrends/Dockerfile
+    restart: unless-stopped
+    expose:
+      - "8000"
+    environment:
+      - TZ=${TZ:-Europe/Berlin}
 
 volumes:
   n8n-data:
