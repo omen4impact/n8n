@@ -14,4 +14,7 @@ RUN apk update && \
       ghostscript \
     && rm -rf /var/cache/apk/*
 
+# Ordner /data anlegen und node-Benutzer Rechte geben
+RUN mkdir -p /data && chown -R node:node /data
+
 USER node
