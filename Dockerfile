@@ -5,6 +5,7 @@ USER root
 RUN apk update && \
     apk add --no-cache \
       ffmpeg \
+      yt-dlp \
       imagemagick \
       tesseract-ocr \
       tesseract-ocr-data-eng \
