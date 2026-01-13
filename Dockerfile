@@ -1,11 +1,10 @@
-# Wir erzwingen das offizielle Debian-Image von n8n.
-# Das garantiert Kompatibilität mit Node.js und einfachen Tool-Installs.
-FROM n8nio/n8n:debian
+# Wir nutzen das offizielle Docker Hub Image.
+# WICHTIG: "n8nio/n8n:latest" ist Debian Bookworm basierend.
+FROM n8nio/n8n:latest
 
 USER root
 
-# Installation via apt-get (Debian Standard)
-# Wir installieren python3-venv, da neuere Python-Versionen das für pip/yt-dlp oft verlangen
+# Installation via apt-get (da Debian Base)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ffmpeg \
@@ -20,7 +19,7 @@ RUN apt-get update && \
     python3 \
     python3-venv \
     && \
-# yt-dlp direkt von GitHub laden (Debian Repo Version ist oft zu alt für YouTube)
+# yt-dlp direkt von GitHub laden (da Debian Repo Version oft zu alt für YouTube ist)
     curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && \
     chmod a+rx /usr/local/bin/yt-dlp && \
 # Aufräumen
