@@ -6,6 +6,7 @@ services:
       - "5678:5678"
     environment:
       - SERVICE_URL_N8N_5678
+      - N8N_NODES_INCLUDE=n8n-nodes-base.executeCommand
       - N8N_EDITOR_BASE_URL=${SERVICE_URL_N8N}
       - WEBHOOK_URL=${SERVICE_URL_N8N}
       - N8N_HOST=${SERVICE_URL_N8N}
