@@ -5,35 +5,27 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - WEBHOOK_URL=${SERVICE_URL_N8N}
+      - SERVICE_URL_N8N_5678
       - N8N_EDITOR_BASE_URL=${SERVICE_URL_N8N}
-      # Fallback, falls Coolify die Variable anders liefert
-      - N8N_HOST=${SERVICE_FQDN_N8N:-n8n.local}
-      
+      - WEBHOOK_URL=${SERVICE_URL_N8N}
+      - N8N_HOST=${SERVICE_URL_N8N}
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE:-Europe/Berlin}
       - TZ=${TZ:-Europe/Berlin}
-      
-      # Datenbank Einstellungen (Intern für n8n)
       - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB:-n8n}
       - DB_POSTGRESDB_HOST=postgresql
       - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB:-n8n}
       - DB_POSTGRESDB_USER=${SERVICE_USER_POSTGRES}
-      - DB_POSTGRESDB_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
       - DB_POSTGRESDB_SCHEMA=public
-      
-      # n8n Einstellungen
+      - DB_POSTGRESDB_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
       - N8N_RUNNERS_ENABLED=${N8N_RUNNERS_ENABLED:-true}
       - N8N_BLOCK_ENV_ACCESS_IN_NODE=${N8N_BLOCK_ENV_ACCESS_IN_NODE:-true}
       - N8N_GIT_NODE_DISABLE_BARE_REPOS=${N8N_GIT_NODE_DISABLE_BARE_REPOS:-true}
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=${N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS:-true}
       - N8N_PROXY_HOPS=${N8N_PROXY_HOPS:-1}
-      
-      # Verbindung zu Pytrends
       - PYTRENDS_BASE_URL=http://pytrends:8000
     volumes:
       - n8n-data:/home/node/.n8n
-      # Host-Pfad mapping (Stelle sicher, dass der Ordner auf dem VPS existiert)
       - /root/podcast-data:/data
     depends_on:
       postgresql:
@@ -56,7 +48,6 @@ services:
       timeout: 20s
       retries: 10
     ports:
-      # HIER ist die Öffnung für Grafana (Host Port 5444 -> Container Port 5432)
       - "5444:5432"
 
   pytrends:
