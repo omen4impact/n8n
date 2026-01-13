@@ -1,20 +1,34 @@
-FROM docker.n8n.io/n8nio/n8n:latest
+# Starte mit dem gleichen Base Image wie n8n
+FROM node:20-alpine
 
-USER root
+# Installiere zuerst alle System-Tools
+RUN apk add --no-cache \
+    ffmpeg \
+    yt-dlp \
+    imagemagick \
+    tesseract-ocr \
+    tesseract-ocr-data-eng \
+    tesseract-ocr-data-deu \
+    tesseract-ocr-data-fra \
+    poppler-utils \
+    ghostscript \
+    tini
 
-# Alpine: apk ist unter /sbin/apk
-RUN /sbin/apk update && \
-    /sbin/apk add --no-cache \
-      ffmpeg \
-      yt-dlp \
-      imagemagick \
-      tesseract-ocr \
-      tesseract-ocr-data-eng \
-      tesseract-ocr-data-deu \
-      tesseract-ocr-data-fra \
-      poppler-utils \
-      ghostscript
+# Installiere n8n global
+RUN npm install -g n8n
+
+# Erstelle node user falls nicht vorhanden
+RUN addgroup -g 1000 node || true && \
+    adduser -u 1000 -G node -s /bin/sh -D node || true
+
+# Arbeitsverzeichnis
+WORKDIR /home/node
 
 RUN mkdir -p /data && chown -R node:node /data
 
 USER node
+
+EXPOSE 5678
+
+ENTRYPOINT ["tini", "--"]
+CMD ["n8n"]
