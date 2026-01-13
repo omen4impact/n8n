@@ -2,20 +2,18 @@ FROM docker.n8n.io/n8nio/n8n:latest
 
 USER root
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+# Alpine: apk ist unter /sbin/apk
+RUN /sbin/apk update && \
+    /sbin/apk add --no-cache \
       ffmpeg \
+      yt-dlp \
       imagemagick \
       tesseract-ocr \
-      tesseract-ocr-eng \
-      tesseract-ocr-deu \
-      tesseract-ocr-fra \
+      tesseract-ocr-data-eng \
+      tesseract-ocr-data-deu \
+      tesseract-ocr-data-fra \
       poppler-utils \
-      ghostscript \
-      python3-pip && \
-    pip3 install --break-system-packages yt-dlp && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+      ghostscript
 
 RUN mkdir -p /data && chown -R node:node /data
 
