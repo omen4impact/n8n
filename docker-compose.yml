@@ -47,6 +47,8 @@ services:
       interval: 5s
       timeout: 20s
       retries: 10
+    ports:
+      - "5444:5432"
 
   pytrends:
     build:
