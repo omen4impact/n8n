@@ -26,11 +26,6 @@ services:
     volumes:
       - n8n-data:/home/node/.n8n
       - /root/podcast-data:/data
-    command: >
-      sh -c "
-        ln -sf /data/CM /home/node/.n8n-files/CM 2>/dev/null || true &&
-        n8n start
-      "
     depends_on:
       postgresql:
         condition: service_healthy
