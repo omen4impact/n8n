@@ -60,6 +60,5 @@ services:
       - TZ=${TZ:-Europe/Berlin}
 
 volumes:
-  /root/podcast-data:
   n8n-data:
   postgresql-data:
