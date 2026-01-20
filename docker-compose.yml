@@ -23,15 +23,12 @@ services:
       - N8N_GIT_NODE_DISABLE_BARE_REPOS=${N8N_GIT_NODE_DISABLE_BARE_REPOS:-true}
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=${N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS:-true}
       - N8N_PROXY_HOPS=${N8N_PROXY_HOPS:-1}
-      - PYTRENDS_BASE_URL=http://pytrends:8000
     volumes:
       - n8n-data:/home/node/.n8n
       - /opt/podcast-data:/data
     depends_on:
       postgresql:
         condition: service_healthy
-      pytrends:
-        condition: service_started
 
   postgresql:
     image: postgres:16-alpine
@@ -49,16 +46,6 @@ services:
       retries: 10
     ports:
       - "5444:5432"
-
-  pytrends:
-    build:
-      context: .
-      dockerfile: pytrends/Dockerfile
-    restart: unless-stopped
-    expose:
-      - "8000"
-    environment:
-      - TZ=${TZ:-Europe/Berlin}
 
 volumes:
   n8n-data:
