@@ -2,6 +2,7 @@ services:
   n8n:
     build: .
     restart: unless-stopped
+    user: "1000:1000"
     ports:
       - "5678:5678"
     environment:
@@ -25,7 +26,7 @@ services:
       - PYTRENDS_BASE_URL=http://pytrends:8000
     volumes:
       - n8n-data:/home/node/.n8n
-      - /root/podcast-data:/data
+      - /opt/podcast-data:/data
     depends_on:
       postgresql:
         condition: service_healthy
