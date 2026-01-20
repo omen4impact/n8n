@@ -1,5 +1,5 @@
 # Starte mit dem gleichen Base Image wie n8n
-FROM node:20-alpine
+FROM n8nio/n8n:1.121.0 
 
 # Installiere zuerst alle System-Tools
 RUN apk add --no-cache \
