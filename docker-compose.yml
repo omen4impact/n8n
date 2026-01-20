@@ -1,6 +1,6 @@
 services:
   n8n:
-    build: .
+    image: n8nio/n8n:1.121.0 
     restart: unless-stopped
     user: "1000:1000"
     ports:
