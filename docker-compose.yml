@@ -1,6 +1,6 @@
 services:
   n8n:
-    image: n8nio/n8n:1.121.0 
+    image: n8nio/n8n:latest
     restart: unless-stopped
     user: "1000:1000"
     ports:
